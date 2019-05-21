@@ -18,12 +18,9 @@ func confirmations(name string) error {
 	_, err := os.Stat(name)
 	fmt.Println(reflect.TypeOf(!os.IsNotExist(err)))
 	if !os.IsNotExist(err) {
-		fmt.Println("OK")
-		return err
-	} else {
-		fmt.Println("ERROR")
 		return err
 	}
+	return err
 }
 
 func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
@@ -59,9 +56,7 @@ func main () {
 
 	Clierr := confirmations(client)
 	if Clierr != nil {
-		fmt.Printf("credentials.json undefaind\n")
-	} else {
-		fmt.Printf("credentials.json done\n")
+		fmt.Printf("credentials.json undefaind")
 	}
 
 	Secerr := confirmations(secret)
@@ -79,6 +74,6 @@ func main () {
 		saveToken(secret, tok)
 
 	} else {
-		fmt.Printf("secret.json is Already exists\n")
+		fmt.Printf("secret.json is Already exists")
 	}
 }

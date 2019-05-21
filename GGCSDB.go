@@ -55,8 +55,8 @@ func main() {
 	min_time := "10:00:00+09:00"
 	max_time := "19:00:00+09:00"
 
-	secretJSON := "./Authentication/secret_token.json"
-	clientJSON := "./Authentication/client_token.json"
+	secretJSON := "./Authentication/secret.json"
+	clientJSON := "./Authentication/credentials.json"
 
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)

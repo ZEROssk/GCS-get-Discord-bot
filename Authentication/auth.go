@@ -1,11 +1,12 @@
-package auth
+package main
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
+	"io/ioutil"
+	"reflect"
 
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
@@ -13,34 +14,22 @@ import (
 	"google.golang.org/api/calendar/v3"
 )
 
-//func test() {
-//	b, err := ioutil.ReadFile("credentials.json")
-//	if err != nil {
-//		log.Fatalf("Unable to read client secret file: %v", err)
-//	}
-//
-//	config, err := google.ConfigFromJSON(b, calendar.CalendarReadonlyScope)
-//	if err != nil {
-//		log.Fatalf("Unable to parse client secret file to config: %v", err)
-//	}
-//	client := getClient(config)
-//	return client
-//}
-
-func getClient(config *oauth2.Config) *http.Client {
-	tokFile := "token.json"
-	tok, err := tokenFromFile(tokFile)
-	if err != nil {
-		tok = getTokenFromWeb(config)
-		saveToken(tokFile, tok)
+func confirmations(name string) error {
+	_, err := os.Stat(name)
+	fmt.Println(reflect.TypeOf(!os.IsNotExist(err)))
+	if !os.IsNotExist(err) {
+		fmt.Println("OK")
+		return err
+	} else {
+		fmt.Println("ERROR")
+		return err
 	}
-	return config.Client(context.Background(), tok)
 }
 
 func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
 	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
-	fmt.Printf("Go to the following link in your browser then type the "+
-	"authorization code: \n%v\n", authURL)
+	fmt.Printf("Go to the following link in your browser then type the authorization code:"+
+	"\n%v\n", authURL)
 
 	var authCode string
 	if _, err := fmt.Scan(&authCode); err != nil {
@@ -54,17 +43,6 @@ func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
 	return tok
 }
 
-func tokenFromFile(file string) (*oauth2.Token, error) {
-	f, err := os.Open(file)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-	tok := &oauth2.Token{}
-	err = json.NewDecoder(f).Decode(tok)
-	return tok, err
-}
-
 func saveToken(path string, token *oauth2.Token) {
 	fmt.Printf("Saving credential file to: %s\n", path)
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
@@ -75,3 +53,32 @@ func saveToken(path string, token *oauth2.Token) {
 	json.NewEncoder(f).Encode(token)
 }
 
+func main () {
+	client := "credentials.json"
+	secret := "secret.json"
+
+	Clierr := confirmations(client)
+	if Clierr != nil {
+		fmt.Printf("credentials.json undefaind\n")
+	} else {
+		fmt.Printf("credentials.json done\n")
+	}
+
+	Secerr := confirmations(secret)
+	if Secerr != nil {
+		b, err := ioutil.ReadFile(client)
+		if err != nil {
+			log.Fatalf("Unable to read client secret file: %v", err)
+		}
+
+		config, err := google.ConfigFromJSON(b, calendar.CalendarReadonlyScope)
+		if err != nil {
+			log.Fatalf("Unable to parse client secret file to config: %v", err)
+		}
+		tok := getTokenFromWeb(config)
+		saveToken(secret, tok)
+
+	} else {
+		fmt.Printf("secret.json is Already exists\n")
+	}
+}

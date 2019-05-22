@@ -1,15 +1,12 @@
 FROM golang:latest
 
-LABEL maintainer="ZERO"
-
 RUN apt-get update && \
 	go get -u google.golang.org/api/calendar/v3 && \
 	go get -u golang.org/x/oauth2/google && \
-	go get github.com/bwmarrin/discordgo && \
-	#go build ./GGCSDB/Authentication/auth.go && \
-	#go build ./GGCSDB/GGCSDB.go
+	go get github.com/joho/godotenv && \
+	go get github.com/bwmarrin/discordgo
 
-ADD ./GGCSDB /
+ADD ./GGCSDB /go
 
-CMD bash -c "go build ./GGCSDB/Authentication/auth.go && go build ./GGCSDB/GGCSDB.go && \
-	/GGCSDB/Authentication/auth && ./GGCSDB/GGCSDB"
+CMD bash -c "go run Authentication/auth.go"
+#"go run GGCSDB.go"

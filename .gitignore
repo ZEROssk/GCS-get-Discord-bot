@@ -1,1 +1,10 @@
-.env
+# Bot token
+/GGCSDB/.env
+
+# Google Calendar token
+/GGCSDB/Authentication/credentials.json
+/GGCSDB/Authentication/secret.json
+
+# ./*.swp
+*swp
+

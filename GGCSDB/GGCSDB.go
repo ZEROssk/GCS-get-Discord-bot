@@ -7,20 +7,22 @@ import (
 	"syscall"
 	"log"
 
+	"./Authentication"
+	"./Get-Schedule"
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
 
 var (
-	ping = "!ping"
+	get = "!get"
 	help = "!help"
 )
 
 func Env_load() {
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatal("Error loading .env file")
-    }
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -29,15 +31,18 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	switch {
-	case m.Content == ping:
-			s.ChannelMessageSend(m.ChannelID, "Pong!")
+	case m.Content == get:
+		GetSchedule.Get_Sc()
+		s.ChannelMessageSend(m.ChannelID, "DONE")
 
 	case m.Content == help:
-			s.ChannelMessageSend(m.ChannelID, "HELP")
+		s.ChannelMessageSend(m.ChannelID, "HELP")
 	}
 }
 
 func main() {
+	Auth.auth()
+
 	Env_load()
 
 	TOKEN := "Bot " + os.Getenv("YOUR_TOKEN")

@@ -8,5 +8,5 @@ RUN apt-get update && \
 
 ADD ./GGCSDB /go
 
-CMD bash -c "go run Authentication/auth.go"
+CMD bash -c "go run GGCSDB.go"
 #"go run GGCSDB.go"

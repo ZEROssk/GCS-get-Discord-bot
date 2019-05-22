@@ -1,4 +1,4 @@
-package main
+package GetSchedule
 
 import (
 	"encoding/json"
@@ -48,7 +48,7 @@ func getEvents(sv *calendar.Service, date string, min string, max string) *calen
 	return Ev
 }
 
-func main() {
+func Get_Sc() {
 	t := time.Now().Format(time.RFC3339)
 	today_date := t[:11]
 

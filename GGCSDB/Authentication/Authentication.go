@@ -1,4 +1,4 @@
-package main
+package Auth
 
 import (
 	"encoding/json"
@@ -50,9 +50,9 @@ func saveToken(path string, token *oauth2.Token) {
 	json.NewEncoder(f).Encode(token)
 }
 
-func main () {
-	client := "credentials.json"
-	secret := "secret.json"
+func auth () {
+	client := "./credentials.json"
+	secret := "./secret.json"
 
 	Clierr := confirmations(client)
 	if Clierr != nil {

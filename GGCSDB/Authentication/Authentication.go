@@ -1,4 +1,4 @@
-package Auth
+package Authentication
 
 import (
 	"encoding/json"
@@ -50,9 +50,9 @@ func saveToken(path string, token *oauth2.Token) {
 	json.NewEncoder(f).Encode(token)
 }
 
-func auth () {
-	client := "./credentials.json"
-	secret := "./secret.json"
+func Auth () {
+	client := "./TokenFile/credentials.json"
+	secret := "./TokenFile/secret.json"
 
 	Clierr := confirmations(client)
 	if Clierr != nil {
@@ -76,4 +76,5 @@ func auth () {
 	} else {
 		fmt.Printf("secret.json is Already exists")
 	}
+	return
 }

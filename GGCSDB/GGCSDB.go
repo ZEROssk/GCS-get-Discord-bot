@@ -18,6 +18,14 @@ var (
 	help = "!help"
 )
 
+//func check_json(name string) error {
+//	_, err := os.Stat(name)
+//	fmt.Println(reflect.TypeOf(!os.IsNotExist(err)))
+//	if !os.IsNotExist(err) {
+//		return err}
+//	return err
+//}
+
 func Env_load() {
 	err := godotenv.Load()
 	if err != nil {
@@ -41,7 +49,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func main() {
-	Auth.auth()
+	Authentication.Auth()
+//	secret := "./Authentication/secret.json"
+//	findJSON := check_json(secret)
+//	if findJSON != nil {
+//		fmt.Printf("secret.json not found")
+//		Auth.auth()
+//	}
 
 	Env_load()
 

@@ -55,8 +55,8 @@ func Get_Sc() {
 	min_time := "10:00:00+09:00"
 	max_time := "19:00:00+09:00"
 
-	secretJSON := "../Authentication/secret.json"
-	clientJSON := "../Authentication/credentials.json"
+	secretJSON := "./TokenFile/secret.json"
+	clientJSON := "./TokenFile/credentials.json"
 
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)

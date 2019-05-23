@@ -48,7 +48,7 @@ func getEvents(sv *calendar.Service, date string, min string, max string) *calen
 	return Ev
 }
 
-func Get_Sc() {
+func Get_Sc() string {
 	t := time.Now().Format(time.RFC3339)
 	today_date := t[:11]
 
@@ -69,15 +69,18 @@ func Get_Sc() {
 	events := getEvents(srv, today_date, min_time, max_time)
 
 	if len(events.Items) == 0 {
-		fmt.Println("No schedule")
+		schedule := "No schedule"
+		return schedule
 	} else {
 		for _, item := range events.Items {
 			date := item.Start.DateTime
 			if date == "" {
 				date = item.Start.Date
 			}
-			fmt.Printf("%v (%v)\n", item.Summary, date)
+			schedule := item.Summary + date
+			return schedule
 		}
 	}
+	return ""
 }
 

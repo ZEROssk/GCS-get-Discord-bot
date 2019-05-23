@@ -8,5 +8,4 @@ RUN apt-get update && \
 
 ADD ./GGCSDB /go
 
-CMD bash -c "go run GGCSDB.go"
-#"go run GGCSDB.go"
+CMD ["go", "run", "GGCSDB.go"]

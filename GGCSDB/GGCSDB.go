@@ -40,8 +40,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	switch {
 	case m.Content == get:
-		GetSchedule.Get_Sc()
-		s.ChannelMessageSend(m.ChannelID, "DONE")
+		schedule := GetSchedule.Get_Sc()
+		s.ChannelMessageSend(m.ChannelID, schedule)
 
 	case m.Content == help:
 		s.ChannelMessageSend(m.ChannelID, "HELP")

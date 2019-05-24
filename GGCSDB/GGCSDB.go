@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"reflect"
 
 	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication"
 	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage"

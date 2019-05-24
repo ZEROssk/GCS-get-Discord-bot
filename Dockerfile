@@ -6,7 +6,9 @@ RUN apt-get update && \
 	go get github.com/joho/godotenv && \
 	go get github.com/bwmarrin/discordgo && \
 	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication && \
-	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Get-Schedule
+	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Get-Schedule && \
+	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage && \
+	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessageRegular
 
 ADD ./GGCSDB /go
 

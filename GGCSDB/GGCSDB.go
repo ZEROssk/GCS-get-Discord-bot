@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"reflect"
 
 	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication"
 	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage"
@@ -22,7 +23,7 @@ func Env_load() {
 	}
 }
 
-func Regular_execution(bot) {
+func Regular_execution(bot *discordgo.Session) {
 	location, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		log.Fatal("ERROR: Failed to LoadLocation:", err)

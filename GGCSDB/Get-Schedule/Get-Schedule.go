@@ -77,7 +77,7 @@ func Get_Sc() string {
 			if date == "" {
 				date = item.Start.Date
 			}
-			schedule := item.Summary + date
+			schedule := item.Summary + " " + date
 			return schedule
 		}
 	}

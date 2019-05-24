@@ -2,21 +2,18 @@ package main
 
 import (
 	"fmt"
+	"time"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
-	"log"
 
 	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication"
-	"./SendMessage"
+	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage"
+	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessageRegular"
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
-
-//var (
-//	get = "!get"
-//	help = "!help"
-//)
 
 func Env_load() {
 	err := godotenv.Load()
@@ -25,20 +22,31 @@ func Env_load() {
 	}
 }
 
-//func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-//	if m.Author.ID == s.State.User.ID {
-//		return
-//	}
-//
-//	switch {
-//	case m.Content == get:
-//		schedule := GetSchedule.Get_Sc()
-//		s.ChannelMessageSend(m.ChannelID, schedule)
-//
-//	case m.Content == help:
-//		s.ChannelMessageSend(m.ChannelID, "HELP")
-//	}
-//}
+func Regular_execution(bot) {
+	location, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		log.Fatal("ERROR: Failed to LoadLocation:", err)
+	}
+	Reg := func() {
+		bot.AddHandler(SendMessageRegular.SendMRegular)
+		err = bot.Open()
+		if err != nil {
+			fmt.Println("error opening connection,", err)
+			return
+		}
+	}
+
+	diff := 3 * time.Second
+
+	ticker := time.NewTicker(diff)
+
+	for {
+		select {
+		case <-ticker.C:
+			Reg()
+		}
+	}
+}
 
 func main() {
 	Authentication.Auth()
@@ -53,7 +61,8 @@ func main() {
 		return
 	}
 
-	//bot.AddHandler(messageCreate)
+	go Regular_execution(bot)
+
 	bot.AddHandler(SendMessage.SendM)
 	err = bot.Open()
 	if err != nil {

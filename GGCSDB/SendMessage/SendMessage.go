@@ -25,3 +25,11 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
+func SendM_Regular(s *discordgo.Session, m *discordgo.MessageCreate) {
+	if m.Author.ID == s.State.User.ID {
+		return
+	}
+	schedule := GetSchedule.Get_Sc()
+	s.ChannelMessageSend(m.ChannelID, schedule)
+}
+

@@ -74,7 +74,7 @@ func Auth () {
 		saveToken(secret, tok)
 
 	} else {
-		fmt.Printf("secret.json is Already exists")
+		fmt.Println("secret.json is Already exists")
 	}
 	return
 }

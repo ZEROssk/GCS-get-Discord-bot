@@ -23,30 +23,43 @@ func Env_load() {
 }
 
 func Regular_execution(bot *discordgo.Session) {
-	location, err := time.LoadLocation("Asia/Tokyo")
-	if err != nil {
-		log.Fatal("ERROR: Failed to LoadLocation:", err)
-	}
-	Reg := func() {
-		bot.AddHandler(SendMessageRegular.SendMRegular)
-		err = bot.Open()
-		if err != nil {
-			fmt.Println("error opening connection,", err)
-			return
-		}
-	}
+	//Reg := func() {
+	//	bot.AddHandler(SendMessageRegular.SendMRegular)
+	//}
 
-	diff := 3 * time.Second
+	diff := 5 * time.Second
 
 	ticker := time.NewTicker(diff)
 
 	for {
 		select {
 		case <-ticker.C:
-			Reg()
+			bot.AddHandler(SendMessageRegular.SendMRegular)
 		}
 	}
 }
+
+//func Diff_time() {
+//	hour := 
+//	location, err := time.LoadLocation("Asia/Tokyo")
+//	NowTime := time.Now().In(location)
+//	noti := time.Date(
+//		NowTime.Year(),
+//		NowTime.Month(),
+//		NowTime.Day(),
+//		hour,
+//		0,
+//		0,
+//		0,
+//		location,
+//	)
+//	if noti.Before(NowTime) {
+//		noti = noti.Add(time.Hour * 24)
+//	}
+//
+//	diff := noti.Sub(NowTime)
+//	return diff
+//}
 
 func main() {
 	Authentication.Auth()
@@ -62,8 +75,8 @@ func main() {
 	}
 
 	go Regular_execution(bot)
-
 	bot.AddHandler(SendMessage.SendM)
+
 	err = bot.Open()
 	if err != nil {
 		fmt.Println("error opening connection,", err)

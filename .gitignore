@@ -8,3 +8,6 @@
 # ./*.swp
 *swp
 
+#Channel ID
+/GGCSDB/ID.txt
+

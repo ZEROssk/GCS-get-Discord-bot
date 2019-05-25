@@ -16,7 +16,6 @@ import (
 
 func confirmations(name string) error {
 	_, err := os.Stat(name)
-	fmt.Println(reflect.TypeOf(!os.IsNotExist(err)))
 	if !os.IsNotExist(err) {
 		return err
 	}
@@ -78,3 +77,4 @@ func Auth () {
 	}
 	return
 }
+

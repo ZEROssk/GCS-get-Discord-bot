@@ -8,9 +8,12 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication"
-	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage"
-	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessageRegular"
+	//	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication"
+	//	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage"
+	//	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessageRegular"
+	"./Authentication"
+	"./SendMessage"
+	"./SendMessageRegular"
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
@@ -27,7 +30,7 @@ func Regular_execution(bot *discordgo.Session) {
 	//	bot.AddHandler(SendMessageRegular.SendMRegular)
 	//}
 
-	diff := 5 * time.Second
+	diff := 60 * time.Second
 
 	ticker := time.NewTicker(diff)
 

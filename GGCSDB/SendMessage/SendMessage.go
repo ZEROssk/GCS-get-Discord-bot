@@ -2,6 +2,7 @@ package SendMessage
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
@@ -12,12 +13,7 @@ var (
 	get = "!get"
 	set = "!set"
 	man = "!man"
-	manM = "```
-			!set 指定した時間に予定を投稿するチャンネルを設定します
-			!get 予定を取得して投稿します
-
-			!man ヘルプです
-			```"
+	manM = "```!get !set !man```"
 )
 
 func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -31,21 +27,20 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, schedule)
 
 	case m.Content == set:
-		schedule := GetSchedule.Get_Sc()
 		s.ChannelMessageSend(m.ChannelID, "チャンネルを設定しました")
-		SetChannel(m.ChannelID)
 
 	case m.Content == man:
 		s.ChannelMessageSend(m.ChannelID, manM)
 	}
 }
 
-func SetChannel(id *discordgo.Channel) {
+func SetChannel(id string) {
 	file, err := os.OpenFile("ID.txt", os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	fmt.Fprintln(file, id)
+	fmt.Println(id)
+	file.Write(([]byte)(id))
 }
 

@@ -2,19 +2,15 @@ package main
 
 import (
 	"fmt"
-	"time"
+//	"time"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
-	//	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication"
-	//	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage"
-	//	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessageRegular"
-	"./Authentication"
-	"./SendMessage"
-	"./SendMessageRegular"
-	"github.com/okzk/ticker"
+	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication"
+	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage"
+	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessageRegular"
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
@@ -27,24 +23,7 @@ func Env_load() {
 }
 
 func Regular_execution(bot *discordgo.Session) {
-	ticker := ticker.New(10 * time.Second, func(t time.Time) {
-		bot.AddHandler(SendMessageRegular.SendMRegular)
-	})
-	fmt.Println(ticker)
-	// //Reg := func() {
-	// //	bot.AddHandler(SendMessageRegular.SendMRegular)
-	// //}
-    //
-	// diff := 10 * time.Second
-    //
-	// ticker := time.NewTicker(diff)
-    //
-	// for {
-	// 	select {
-	// 	case <-ticker.C:
-	// 		bot.AddHandler(SendMessageRegular.SendMRegular)
-	// 	}
-	// }
+	bot.AddHandler(SendMessageRegular.SendMRegular)
 }
 
 //func Diff_time() {

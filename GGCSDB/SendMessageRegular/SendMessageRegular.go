@@ -4,20 +4,24 @@ import (
 	"os"
 	"io/ioutil"
 	"fmt"
+	"time"
 
+	"github.com/okzk/ticker"
 	"github.com/bwmarrin/discordgo"
-	"./Get-S"
+	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Get-Schedule"
 )
 
 func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	fmt.Println("check")
 	Cid := ReadID()
-	fmt.Println("Cid: ",Cid)
 	schedule := GetSchedule.Get_Sc()
-	s.ChannelMessageSend(Cid, schedule)
+
+	ticker := ticker.New(10 * time.Second, func(t time.Time) {
+		s.ChannelMessageSend(Cid, schedule)
+	})
+	fmt.Println(ticker)
 }
 
 func ReadID() string {

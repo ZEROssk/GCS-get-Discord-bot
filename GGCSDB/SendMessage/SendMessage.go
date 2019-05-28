@@ -1,7 +1,6 @@
 package SendMessage
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -27,6 +26,7 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, schedule)
 
 	case m.Content == set:
+		SetChannel(m.ChannelID)
 		s.ChannelMessageSend(m.ChannelID, "チャンネルを設定しました")
 
 	case m.Content == man:
@@ -40,7 +40,6 @@ func SetChannel(id string) {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	fmt.Println(id)
 	file.Write(([]byte)(id))
 }
 

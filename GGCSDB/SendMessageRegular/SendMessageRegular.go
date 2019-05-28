@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Get-Schedule"
+	"./Get-S"
 )
 
 func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -15,6 +15,7 @@ func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	fmt.Println("check")
 	Cid := ReadID()
+	fmt.Println("Cid: ",Cid)
 	schedule := GetSchedule.Get_Sc()
 	s.ChannelMessageSend(Cid, schedule)
 }

@@ -14,6 +14,7 @@ import (
 	"./Authentication"
 	"./SendMessage"
 	"./SendMessageRegular"
+	"github.com/okzk/ticker"
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
@@ -26,20 +27,24 @@ func Env_load() {
 }
 
 func Regular_execution(bot *discordgo.Session) {
-	//Reg := func() {
-	//	bot.AddHandler(SendMessageRegular.SendMRegular)
-	//}
-
-	diff := 60 * time.Second
-
-	ticker := time.NewTicker(diff)
-
-	for {
-		select {
-		case <-ticker.C:
-			bot.AddHandler(SendMessageRegular.SendMRegular)
-		}
-	}
+	ticker := ticker.New(10 * time.Second, func(t time.Time) {
+		bot.AddHandler(SendMessageRegular.SendMRegular)
+	})
+	fmt.Println(ticker)
+	// //Reg := func() {
+	// //	bot.AddHandler(SendMessageRegular.SendMRegular)
+	// //}
+    //
+	// diff := 10 * time.Second
+    //
+	// ticker := time.NewTicker(diff)
+    //
+	// for {
+	// 	select {
+	// 	case <-ticker.C:
+	// 		bot.AddHandler(SendMessageRegular.SendMRegular)
+	// 	}
+	// }
 }
 
 //func Diff_time() {
@@ -77,8 +82,8 @@ func main() {
 		return
 	}
 
-	go Regular_execution(bot)
 	bot.AddHandler(SendMessage.SendM)
+	go Regular_execution(bot)
 
 	err = bot.Open()
 	if err != nil {

@@ -23,6 +23,7 @@ func Env_load() {
 }
 
 func Regular_execution(bot *discordgo.Session) {
+	fmt.Println("check1")
 	bot.AddHandler(SendMessageRegular.SendMRegular)
 }
 
@@ -61,8 +62,8 @@ func main() {
 		return
 	}
 
-	bot.AddHandler(SendMessage.SendM)
 	go Regular_execution(bot)
+	bot.AddHandler(SendMessage.SendM)
 
 	err = bot.Open()
 	if err != nil {

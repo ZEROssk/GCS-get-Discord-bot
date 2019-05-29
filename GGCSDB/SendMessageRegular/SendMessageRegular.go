@@ -15,12 +15,15 @@ func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	// Cid := ReadID()
-	// schedule := GetSchedule.Get_Sc()
+	Cid := ReadID()
+	schedule := GetSchedule.Get_Sc()
+	fnt.Println("check 2")
 
 	ticker := ticker.New(10 * time.Second, func(t time.Time) {
-		Cid := ReadID()
-		schedule := GetSchedule.Get_Sc()
+	//	Cid := ReadID()
+		fmt.Println(Cid)
+	//	schedule := GetSchedule.Get_Sc()
+		fmt.Println(schedule)
 		s.ChannelMessageSend(Cid, schedule)
 	})
 	fmt.Println(ticker)

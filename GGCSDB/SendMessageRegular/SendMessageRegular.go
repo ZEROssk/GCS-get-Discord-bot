@@ -8,7 +8,8 @@ import (
 
 	"github.com/okzk/ticker"
 	"github.com/bwmarrin/discordgo"
-	"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Get-Schedule"
+	//"github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Get-Schedule"
+	"./Get-S"
 )
 
 func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -21,7 +22,7 @@ func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	ticker := ticker.New(10 * time.Second, func(t time.Time) {
 	//	Cid := ReadID()
-		fmt.Println(Cid)
+		fmt.Println("Cid: ",Cid)
 	//	schedule := GetSchedule.Get_Sc()
 		fmt.Println(schedule)
 		s.ChannelMessageSend(Cid, schedule)

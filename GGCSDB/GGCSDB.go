@@ -62,8 +62,8 @@ func main() {
 		return
 	}
 
-	go Regular_execution(bot)
 	bot.AddHandler(SendMessage.SendM)
+	go Regular_execution(bot)
 
 	err = bot.Open()
 	if err != nil {

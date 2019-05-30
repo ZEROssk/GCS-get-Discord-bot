@@ -8,6 +8,12 @@
 # ./*.swp
 *swp
 
-#Channel ID
+# Channel ID
 /GGCSDB/ID.txt
+
+# sh
+build_run.sh
+
+# gitignore
+.gitignore
 

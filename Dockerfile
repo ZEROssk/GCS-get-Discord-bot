@@ -7,9 +7,7 @@ RUN apt-get update && \
 	go get github.com/bwmarrin/discordgo && \
 	go get github.com/okzk/ticker && \
 	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Authentication && \
-	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Get-Schedule && \
-	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessage && \
-	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/SendMessageRegular
+	go get github.com/ZEROssk/GCS-get-Discord-bot/GGCSDB/Get-Schedule
 
 ADD ./GGCSDB /go
 

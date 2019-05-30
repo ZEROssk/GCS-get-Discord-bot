@@ -2,18 +2,11 @@
 /GGCSDB/.env
 
 # Google Calendar token
-/GGCSDB/TokenFile/credentials.json
-/GGCSDB/TokenFile/secret.json
+/GGCSDB/TokenFile/
 
 # ./*.swp
 *swp
 
-# Channel ID
-/GGCSDB/ID.txt
-
 # sh
 build_run.sh
-
-# gitignore
-.gitignore
 

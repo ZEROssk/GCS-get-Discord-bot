@@ -23,8 +23,7 @@ func confirmations(name string) error {
 
 func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
 	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
-	fmt.Printf("Go to the following link in your browser then type the authorization code:"+
-	"\n%v\n", authURL)
+	fmt.Printf("Go to the following link in your browser then type the authorization code:"+"\n%v\n", authURL)
 
 	var authCode string
 	if _, err := fmt.Scan(&authCode); err != nil {
@@ -55,6 +54,8 @@ func Auth () {
 	Clierr := confirmations(client)
 	if Clierr != nil {
 		fmt.Printf("credentials.json undefaind")
+	} else {
+		fmt.Println("credentials.json is ok")
 	}
 
 	Secerr := confirmations(secret)
@@ -72,7 +73,7 @@ func Auth () {
 		saveToken(secret, tok)
 
 	} else {
-		fmt.Println("secret.json is Already exists")
+		fmt.Println("secret.json is ok")
 	}
 	return
 }

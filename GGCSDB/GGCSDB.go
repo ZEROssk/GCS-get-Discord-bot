@@ -8,28 +8,28 @@ import (
 	"os/signal"
 	"syscall"
 	"regexp"
+	"strings"
+	"strconv"
 
 	"./Authentication"
 	"./Get-Schedule"
-//	"github.com/okzk/ticker"
+	//	"github.com/okzk/ticker"
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
 
 var (
-	set = "!set"
 	get = "!get"
 	clear = "!clear"
 	man = "!man"
 
 	setM = "Set Regular execution"
 	clearM = "Clear Regular execution"
-	manM = "```!get !set !clear !man```"
+	manM = "```!get, !set <time>, !clear, !man```"
 
 	Cid string
 	check_num int = 0
-	Rtime time.Duration = 5
-	//kill = make(chan bool)
+	Rtime time.Duration
 )
 
 func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -40,48 +40,22 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	GetRtime := regexp.MustCompile(`^!set \d\d?`)
 
 	if GetRtime.Match([]byte(m.Content)) {
-		splittedCommand := strings.Split(m.Content, " ")
+		split := strings.Split(m.Content, " ")
 
-		now := time.Now().In(jst)
-
-		hour, err := strconv.Atoi(splittedCommand[1])
+		getRt, err := strconv.Atoi(split[1])
 		if err != nil {
 			return
 		}
 
-		if 24 <= hour {
-			return
-		}
-
-
-		notificationTime := time.Date(
-			now.Year(),
-			now.Month(),
-			now.Day(),
-			hour,
-			0, // min
-			0, // sec
-			0, // nsec
-			jst,
-		)
-
-		// !(now < notification time)
-		if notificationTime.Before(now) {
-			notificationTime = notificationTime.Add(time.Hour * 24)
-		}
-
-		diff := notificationTime.Sub(now)
+		Diff_time(getRt)
+		Cid = m.ChannelID
+		s.ChannelMessageSend(m.ChannelID, setM)
 	}
 
 	switch {
 	case m.Content == get:
 		schedule := GetSchedule.Get_Sc()
 		s.ChannelMessageSend(m.ChannelID, schedule)
-
-	case m.Content == set:
-		Cid = m.ChannelID
-		check_num = 0
-		s.ChannelMessageSend(m.ChannelID, setM)
 
 	case m.Content == clear:
 		check_num = 1
@@ -100,7 +74,7 @@ func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if Cid == "" && Rtime == 5 {
+	if Cid == "" {
 		return
 	}
 
@@ -117,10 +91,37 @@ func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}	
 			s.ChannelMessageSend(Cid, schedule)
 		}
-		//ticker := ticker.New(Rtime * time.Second, func(t time.Time) {
-		//	s.ChannelMessageSend(Cid, schedule)
-		//})
 	}
+}
+
+func Diff_time(Rt int) {
+	location, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		log.Fatal("Error LoadLocation: ", err)
+	}
+
+	now := time.Now().In(location)
+
+	if 24 <= Rt {
+		return
+	}
+
+	notificationTime := time.Date(
+		now.Year(),
+		now.Month(),
+		now.Day(),
+		Rt,
+		0, // min
+		0, // sec
+		0, // nsec
+		location,
+	)
+
+	if notificationTime.Before(now) {
+		notificationTime = notificationTime.Add(time.Hour * 24)
+	}
+
+	Rtime = notificationTime.Sub(now)
 }
 
 func Env_load() {
@@ -129,28 +130,6 @@ func Env_load() {
 		log.Fatal("Error loading .env file")
 	}
 }
-
-//func Diff_time() {
-//	hour := 
-//	location, err := time.LoadLocation("Asia/Tokyo")
-//	NowTime := time.Now().In(location)
-//	noti := time.Date(
-//		NowTime.Year(),
-//		NowTime.Month(),
-//		NowTime.Day(),
-//		hour,
-//		0,
-//		0,
-//		0,
-//		location,
-//	)
-//	if noti.Before(NowTime) {
-//		noti = noti.Add(time.Hour * 24)
-//	}
-//
-//	diff := noti.Sub(NowTime)
-//	return diff
-//}
 
 func main() {
 	Authentication.Auth()
@@ -161,7 +140,7 @@ func main() {
 
 	bot, err := discordgo.New(TOKEN)
 	if err != nil {
-		fmt.Println("error creating Discord session,", err)
+		fmt.Println("Error creating Discord session: ", err)
 		return
 	}
 
@@ -170,11 +149,11 @@ func main() {
 
 	err = bot.Open()
 	if err != nil {
-		fmt.Println("error opening connection,", err)
+		fmt.Println("Error opening connection: ", err)
 		return
 	}
 
-	fmt.Println("Bot is now running.")
+	fmt.Println("---Bot is now running---")
 
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-stop

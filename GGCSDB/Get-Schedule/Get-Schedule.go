@@ -52,8 +52,8 @@ func Get_Sc() string {
 	t := time.Now().Format(time.RFC3339)
 	today_date := t[:11]
 
-	min_time := "10:00:00+09:00"
-	max_time := "19:00:00+09:00"
+	min_time := "3:00:00+09:00"
+	max_time := "21:00:00+09:00"
 
 	secretJSON := "./TokenFile/secret.json"
 	clientJSON := "./TokenFile/credentials.json"
@@ -77,6 +77,7 @@ func Get_Sc() string {
 			if date == "" {
 				date = item.Start.Date
 			}
+
 			schedule := item.Summary + " " + date
 			return schedule
 		}

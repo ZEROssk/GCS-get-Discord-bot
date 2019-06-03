@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	get = "!get"
+	today = "!today"
 	clear = "!clear"
 	man = "!man"
 
@@ -50,10 +50,11 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 		Diff_time(getRt)
 		Cid = m.ChannelID
 		s.ChannelMessageSend(m.ChannelID, setM)
+		fmt.Println(Rtime)
 	}
 
 	switch {
-	case m.Content == get:
+	case m.Content == today:
 		schedule := GetSchedule.Get_Sc()
 		s.ChannelMessageSend(m.ChannelID, schedule)
 
@@ -80,7 +81,7 @@ func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	schedule := GetSchedule.Get_Sc()
 
-	ticker := time.NewTicker(Rtime * time.Second)
+	ticker := time.NewTicker(Rtime)// * time.Second)
 
 	for {
 		select {

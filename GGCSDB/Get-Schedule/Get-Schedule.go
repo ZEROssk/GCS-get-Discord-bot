@@ -79,6 +79,7 @@ func Get_Sc() string {
 			}
 
 			schedule := item.Summary + " " + date
+			fmt.Println(schedule)
 			return schedule
 		}
 	}

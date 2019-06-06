@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/bwmarrin/discordgo"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -39,8 +40,8 @@ func getClient(config *oauth2.Config, tokFile string) *http.Client {
 	return config.Client(context.Background(), tok)
 }
 
-func getEvents(sv *calendar.Service, date string, min string, max string) *calendar.Events {
-	Ev, err := sv.Events.List("primary").TimeMin(date + min).TimeMax(date + max).
+func getEvents(sv *calendar.Service, mindate string, min string, max string) *calendar.Events {
+	Ev, err := sv.Events.List("primary").TimeMin(mindate + min).TimeMax(mindate + max).
 	SingleEvents(true).OrderBy("startTime").Do()
 	if err != nil {
 		log.Fatalf("func getEvents erroe: %v", err)
@@ -48,9 +49,12 @@ func getEvents(sv *calendar.Service, date string, min string, max string) *calen
 	return Ev
 }
 
-func Get_Sc() string {
-	t := time.Now().Format(time.RFC3339)
-	today_date := t[:11]
+func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
+	location, _ := time.LoadLocation("Asia/Tokyo")
+	t := time.Now().In(location)
+
+	mint := t.Format(time.RFC3339)
+	min_date := mint[:11]
 
 	min_time := "3:00:00+09:00"
 	max_time := "21:00:00+09:00"
@@ -66,23 +70,34 @@ func Get_Sc() string {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
-	events := getEvents(srv, today_date, min_time, max_time)
+	for i := 0; i < 5; i++ {
+		newdate := t.AddDate(0, 0, i)
+		weekday := newdate.Weekday()
+		check := weekday.String()
 
-	if len(events.Items) == 0 {
-		schedule := "No schedule"
-		return schedule
-	} else {
-		for _, item := range events.Items {
-			date := item.Start.DateTime
-			if date == "" {
-				date = item.Start.Date
+		maxt := newdate.Format(time.RFC3339)
+		max_date := maxt[:11]
+
+		events := getEvents(srv, max_date, min_time, max_time)
+
+		if len(events.Items) == 0 {
+			s.ChannelMessageSend(m.ChannelID, "No schedule")
+		} else {
+			for _, item := range events.Items {
+				date := item.Start.DateTime
+				if date == "" {
+					date = item.Start.Date
+				}
+
+				schedule := item.Summary + " " + date
+				fmt.Println(schedule)
+				s.ChannelMessageSend(m.ChannelID, schedule)
 			}
-
-			schedule := item.Summary + " " + date
-			fmt.Println(schedule)
-			return schedule
+		}
+		if check == "Friday" {
+			break
 		}
 	}
-	return ""
+	return "No schedule"
 }
 

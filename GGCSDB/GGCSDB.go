@@ -13,7 +13,7 @@ import (
 
 	"./Authentication"
 	"./Get-Schedule"
-	//	"github.com/okzk/ticker"
+	//"github.com/okzk/ticker"
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
@@ -25,7 +25,13 @@ var (
 
 	setM = "Set Regular execution"
 	clearM = "Clear Regular execution"
-	manM = "```!get, !set <time>, !clear, !man```"
+	manM = "```!today, !set <time>, !clear, !man```"
+
+	min_time = "1:00:00+09:00"
+	max_time = "23:00:00+09:00"
+
+	secretJSON = "./TokenFile/secret.json"
+	clientJSON = "./TokenFile/credentials.json"
 
 	Cid string
 	check_num int = 0
@@ -55,8 +61,7 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	switch {
 	case m.Content == today:
-		schedule := GetSchedule.Get_Sc()
-		s.ChannelMessageSend(m.ChannelID, schedule)
+		GetSchedule.Get_Sc(s, m)
 
 	case m.Content == clear:
 		check_num = 1
@@ -70,6 +75,22 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
+// func test() {
+// 	a := []string{"Mon", "Tue", "Wed", "Thu", "Fri"}
+// 	st := ""
+// 	jst, _ := time.LoadLocation("Asia/Tokyo")
+// 	t := time.Now().In(jst)
+//
+// 	for i := 0; i < len(a); i++ {
+// 		ttt := t.AddDate(0, 0, i)
+// 		ab := ttt.Weekday()
+// 		fmt.Println(ab)
+// 		st = ab.String()
+// 		if st == "Fri" {
+// 			break
+// 		}
+// 	}
+
 func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
@@ -79,7 +100,7 @@ func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	schedule := GetSchedule.Get_Sc()
+	schedule := GetSchedule.Get_Sc(s, m)
 
 	ticker := time.NewTicker(Rtime)// * time.Second)
 

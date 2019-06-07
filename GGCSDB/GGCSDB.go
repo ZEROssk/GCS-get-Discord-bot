@@ -20,12 +20,13 @@ import (
 
 var (
 	today = "!today"
+	week = "!week"
 	clear = "!clear"
 	man = "!man"
 
 	setM = "Set Regular execution"
 	clearM = "Clear Regular execution"
-	manM = "```!today, !set <time>, !clear, !man```"
+	manM = "```!today, !week, !set <time>, !clear, !man```"
 
 	min_time = "1:00:00+09:00"
 	max_time = "23:00:00+09:00"
@@ -63,6 +64,9 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	case m.Content == today:
 		GetSchedule.Get_Sc(s, m)
 
+	case m.Content == week:
+		GetSchedule.Get_Sc_Week(s, m)
+
 	case m.Content == clear:
 		check_num = 1
 		Cid = ""
@@ -74,22 +78,6 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, manM)
 	}
 }
-
-// func test() {
-// 	a := []string{"Mon", "Tue", "Wed", "Thu", "Fri"}
-// 	st := ""
-// 	jst, _ := time.LoadLocation("Asia/Tokyo")
-// 	t := time.Now().In(jst)
-//
-// 	for i := 0; i < len(a); i++ {
-// 		ttt := t.AddDate(0, 0, i)
-// 		ab := ttt.Weekday()
-// 		fmt.Println(ab)
-// 		st = ab.String()
-// 		if st == "Fri" {
-// 			break
-// 		}
-// 	}
 
 func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {

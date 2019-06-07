@@ -21,12 +21,13 @@ import (
 var (
 	today = "!today"
 	week = "!week"
+	nweek = "!nweek"
 	clear = "!clear"
 	man = "!man"
 
 	setM = "Set Regular execution"
 	clearM = "Clear Regular execution"
-	manM = "```!today, !week, !set <time>, !clear, !man```"
+	manM = "```!today, !week, !nweek, !set <time>, !clear, !man```"
 
 	min_time = "1:00:00+09:00"
 	max_time = "23:00:00+09:00"
@@ -66,6 +67,9 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	case m.Content == week:
 		GetSchedule.Get_Sc_Week(s, m)
+
+	case m.Content == nweek:
+		GetSchedule.Get_Sc_NWeek(s, m)
 
 	case m.Content == clear:
 		check_num = 1

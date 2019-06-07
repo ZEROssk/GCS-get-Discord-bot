@@ -71,8 +71,8 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	events := getEvents(srv, today_date, min_time, max_time)
 
 	if len(events.Items) == 0 {
-		schedule := "No schedule"
-		return schedule
+		message := today_date + "-" + "No schedule"
+		s.ChannelMessageSend(m.ChannelID, message)
 	} else {
 		for _, item := range events.Items {
 			date := item.Start.DateTime
@@ -117,7 +117,70 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		events := getEvents(srv, date, min_time, max_time)
 
 		if len(events.Items) == 0 {
-			s.ChannelMessageSend(m.ChannelID, "No schedule")
+			message := date + "-" + "No schedule"
+			s.ChannelMessageSend(m.ChannelID, message)
+		} else {
+			for _, item := range events.Items {
+				date := item.Start.DateTime
+				if date == "" {
+					date = item.Start.Date
+				}
+
+				schedule := item.Summary + " " + date
+				fmt.Println(schedule)
+				s.ChannelMessageSend(m.ChannelID, schedule)
+			}
+		}
+		if check == "Friday" {
+			break
+		}
+	}
+	return "No schedule"
+}
+
+func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
+	location, _ := time.LoadLocation("Asia/Tokyo")
+	t := time.Now().In(location)
+
+	min_time := "1:00:00+09:00"
+	max_time := "23:00:00+09:00"
+
+	secretJSON := "./TokenFile/secret.json"
+	clientJSON := "./TokenFile/credentials.json"
+
+	config := readClientJSON(clientJSON)
+	client := getClient(config, secretJSON)
+
+	srv, err := calendar.New(client)
+	if err != nil {
+		log.Fatalf("Unable to retrieve Calendar client: %v", err)
+	}
+
+	var NMdate time.Time
+
+	for i := 0; i < 7; i++ {
+		nextMonD := t.AddDate(0, 0, i+1)
+		day := nextMonD.Weekday()
+		checkWDay := day.String()
+		if checkWDay == "Monday" {
+			NMdate = nextMonD
+			break
+		}
+	}
+
+	for i := 0; i < 5; i++ {
+		newdate := NMdate.AddDate(0, 0, i)
+		weekday := newdate.Weekday()
+		check := weekday.String()
+
+		fdate := newdate.Format(time.RFC3339)
+		date := fdate[:11]
+
+		events := getEvents(srv, date, min_time, max_time)
+
+		if len(events.Items) == 0 {
+			message := date + "-" + "No schedule"
+			s.ChannelMessageSend(m.ChannelID, message)
 		} else {
 			for _, item := range events.Items {
 				date := item.Start.DateTime

@@ -35,9 +35,9 @@ var (
 	secretJSON = "./TokenFile/secret.json"
 	clientJSON = "./TokenFile/credentials.json"
 
-	Cid string
-	check_num int = 0
-	Rtime time.Duration
+//	Cid string
+//	check_num int = 0
+//	Rtime time.Duration
 )
 
 func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -45,21 +45,21 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	GetRtime := regexp.MustCompile(`^!set \d\d?`)
-
-	if GetRtime.Match([]byte(m.Content)) {
-		split := strings.Split(m.Content, " ")
-
-		getRt, err := strconv.Atoi(split[1])
-		if err != nil {
-			return
-		}
-
-		Diff_time(getRt)
-		Cid = m.ChannelID
-		s.ChannelMessageSend(m.ChannelID, setM)
-		fmt.Println(Rtime)
-	}
+	// GetRtime := regexp.MustCompile(`^!set \d\d?`)
+    //
+	// if GetRtime.Match([]byte(m.Content)) {
+	// 	split := strings.Split(m.Content, " ")
+    //
+	// 	getRt, err := strconv.Atoi(split[1])
+	// 	if err != nil {
+	// 		return
+	// 	}
+    //
+	// 	Diff_time(getRt)
+	// 	Cid = m.ChannelID
+	// 	s.ChannelMessageSend(m.ChannelID, setM)
+	// 	fmt.Println(Rtime)
+	// }
 
 	switch {
 	case m.Content == today:
@@ -71,72 +71,72 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	case m.Content == nweek:
 		GetSchedule.Get_Sc_NWeek(s, m)
 
-	case m.Content == clear:
-		check_num = 1
-		Cid = ""
-		Rtime = 0
-		s.ChannelMessageSend(m.ChannelID, clearM)
-		return
+	// case m.Content == clear:
+	// 	check_num = 1
+	// 	Cid = ""
+	// 	Rtime = 0
+	// 	s.ChannelMessageSend(m.ChannelID, clearM)
+	// 	return
 
 	case m.Content == man:
 		s.ChannelMessageSend(m.ChannelID, manM)
 	}
 }
 
-func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if m.Author.ID == s.State.User.ID {
-		return
-	}
-
-	if Cid == "" {
-		return
-	}
-
-	schedule := GetSchedule.Get_Sc(s, m)
-
-	ticker := time.NewTicker(Rtime)// * time.Second)
-
-	for {
-		select {
-		case <-ticker.C:
-			if check_num == 1 {
-				ticker.Stop()
-				return
-			}	
-			s.ChannelMessageSend(Cid, schedule)
-		}
-	}
-}
-
-func Diff_time(Rt int) {
-	location, err := time.LoadLocation("Asia/Tokyo")
-	if err != nil {
-		log.Fatal("Error LoadLocation: ", err)
-	}
-
-	now := time.Now().In(location)
-
-	if 24 <= Rt {
-		return
-	}
-
-	notificationTime := time.Date(
-		now.Year(),
-		now.Month(),
-		now.Day(),
-		Rt,
-		0, // min
-		0, // sec
-		0, // nsec
-		location,
-	)
-
-	if notificationTime.Before(now) {
-		notificationTime = notificationTime.Add(time.Hour * 24)
-	}
-
-	Rtime = notificationTime.Sub(now)
-}
+// func SendMRegular(s *discordgo.Session, m *discordgo.MessageCreate) {
+// 	if m.Author.ID == s.State.User.ID {
+// 		return
+// 	}
+//
+// 	if Cid == "" {
+// 		return
+// 	}
+//
+// 	schedule := GetSchedule.Get_Sc(s, m)
+//
+// 	ticker := time.NewTicker(Rtime)// * time.Second)
+//
+// 	for {
+// 		select {
+// 		case <-ticker.C:
+// 			if check_num == 1 {
+// 				ticker.Stop()
+// 				return
+// 			}	
+// 			s.ChannelMessageSend(Cid, schedule)
+// 		}
+// 	}
+// }
+//
+// func Diff_time(Rt int) {
+// 	location, err := time.LoadLocation("Asia/Tokyo")
+// 	if err != nil {
+// 		log.Fatal("Error LoadLocation: ", err)
+// 	}
+//
+// 	now := time.Now().In(location)
+//
+// 	if 24 <= Rt {
+// 		return
+// 	}
+//
+// 	notificationTime := time.Date(
+// 		now.Year(),
+// 		now.Month(),
+// 		now.Day(),
+// 		Rt,
+// 		0, // min
+// 		0, // sec
+// 		0, // nsec
+// 		location,
+// 	)
+//
+// 	if notificationTime.Before(now) {
+// 		notificationTime = notificationTime.Add(time.Hour * 24)
+// 	}
+//
+// 	Rtime = notificationTime.Sub(now)
+// }
 
 func Env_load() {
 	err := godotenv.Load()
@@ -159,7 +159,7 @@ func main() {
 	}
 
 	bot.AddHandler(SendM)
-	go bot.AddHandler(SendMRegular)
+//	go bot.AddHandler(SendMRegular)
 
 	err = bot.Open()
 	if err != nil {

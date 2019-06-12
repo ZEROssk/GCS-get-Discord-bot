@@ -74,16 +74,17 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		message := today_date + "-" + "No schedule"
 		s.ChannelMessageSend(m.ChannelID, message)
 	} else {
-		for _, item := range events.Items {
-			date := item.Start.DateTime
-			if date == "" {
-				date = item.Start.Date
-			}
-
-			schedule := item.Summary + " " + date
-			fmt.Println(schedule)
-			s.ChannelMessageSend(m.ChannelID, schedule)
-		}
+		s.ChannelMessageSend(m.ChannelID, events.Items)
+		// for _, item := range events.Items {
+		// 	date := item.Start.DateTime
+		// 	if date == "" {
+		// 		date = item.Start.Date
+		// 	}
+        //
+		// 	schedule := item.Summary + " " + date
+		// 	fmt.Println(schedule)
+		// 	s.ChannelMessageSend(m.ChannelID, schedule)
+		// }
 	}
 	return "No schedule"
 }
@@ -120,16 +121,17 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 			message := date + "-" + "No schedule"
 			s.ChannelMessageSend(m.ChannelID, message)
 		} else {
-			for _, item := range events.Items {
-				date := item.Start.DateTime
-				if date == "" {
-					date = item.Start.Date
-				}
-
-				schedule := item.Summary + " " + date
-				fmt.Println(schedule)
-				s.ChannelMessageSend(m.ChannelID, schedule)
-			}
+			s.ChannelMessageSend(m.ChannelID, events.Items)
+			// for _, item := range events.Items {
+			// 	date := item.Start.DateTime
+			// 	if date == "" {
+			// 		date = item.Start.Date
+			// 	}
+            //
+			// 	schedule := item.Summary + " " + date
+			// 	fmt.Println(schedule)
+			// 	s.ChannelMessageSend(m.ChannelID, schedule)
+			// }
 		}
 		if check == "Friday" {
 			break
@@ -182,16 +184,17 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 			message := date + "-" + "No schedule"
 			s.ChannelMessageSend(m.ChannelID, message)
 		} else {
-			for _, item := range events.Items {
-				date := item.Start.DateTime
-				if date == "" {
-					date = item.Start.Date
-				}
-
-				schedule := item.Summary + " " + date
-				fmt.Println(schedule)
-				s.ChannelMessageSend(m.ChannelID, schedule)
-			}
+			s.ChannelMessageSend(m.ChannelID, events.Items)
+			// for _, item := range events.Items {
+			// 	date := item.Start.DateTime
+			// 	if date == "" {
+			// 		date = item.Start.Date
+			// 	}
+            //
+			// 	schedule := item.Summary + " " + date
+			// 	fmt.Println(schedule)
+			// 	s.ChannelMessageSend(m.ChannelID, schedule)
+			// }
 		}
 		if check == "Friday" {
 			break

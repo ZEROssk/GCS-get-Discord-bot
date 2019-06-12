@@ -81,7 +81,12 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	} else {
 		for _, item := range events.Items {
 			d := item.Start.DateTime
-			date := d[11:16]
+			date := ""
+			if d == "" {
+				date = "00:00"
+			} else {
+				date = d[11:16]
+			}
 
 			schedule := h + date + " " + item.Summary + h
 			s.ChannelMessageSend(m.ChannelID, schedule)
@@ -129,7 +134,12 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
-				date := d[11:16]
+				date := ""
+				if d == "" {
+					date = "00:00"
+				} else {
+					date = d[11:16]
+				}
 
 				schedule := h + date + " " + item.Summary + h
 				s.ChannelMessageSend(m.ChannelID, schedule)
@@ -193,7 +203,12 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
-				date := d[11:16]
+				date := ""
+				if d == "" {
+					date = "00:00"
+				} else {
+					date = d[11:16]
+				}
 
 				schedule := h + date + " " + item.Summary + h
 				s.ChannelMessageSend(m.ChannelID, schedule)

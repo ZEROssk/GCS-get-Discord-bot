@@ -9,5 +9,4 @@
 - !nweek is Get next week schedule.
 
 #### License
-##### MIT License
-
+- MIT License

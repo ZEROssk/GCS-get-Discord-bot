@@ -22,7 +22,7 @@ var (
 
 	setM = "Set Regular execution"
 	clearM = "Clear Regular execution"
-	manM = "```Command list: !today, !week, !nweek, !man```Readme: https://github.com/ZEROssk/GCS-get-Discord-bot"
+	manM = "```＊ CmdList: !today, !week, !nweek, !man\r|\r└─ README: https://github.com/ZEROssk/GCS-get-Discord-bot```"
 
 	min_time = "1:00:00+09:00"
 	max_time = "23:00:00+09:00"

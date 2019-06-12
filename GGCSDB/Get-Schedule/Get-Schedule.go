@@ -53,6 +53,7 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	location, _ := time.LoadLocation("Asia/Tokyo")
 	t := time.Now().In(location).Format(time.RFC3339)
 	today_date := t[:11]
+	Date := t[:10]
 
 	min_time := "1:00:00+09:00"
 	max_time := "23:00:00+09:00"
@@ -63,6 +64,8 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)
 
+	h := "```"
+
 	srv, err := calendar.New(client)
 	if err != nil {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
@@ -71,7 +74,7 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	events := getEvents(srv, today_date, min_time, max_time)
 
 	if len(events.Items) == 0 {
-		message := today_date + "-" + "No schedule"
+		message := Date + "```No schedule```"
 		s.ChannelMessageSend(m.ChannelID, message)
 	} else {
 		for _, item := range events.Items {
@@ -80,7 +83,7 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 				date = item.Start.Date
 			}
 
-			schedule := item.Summary + " " + date
+			schedule := h + item.Summary + " " + date + h
 			fmt.Println(schedule)
 			s.ChannelMessageSend(m.ChannelID, schedule)
 		}
@@ -101,6 +104,8 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)
 
+	h := "```"
+
 	srv, err := calendar.New(client)
 	if err != nil {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
@@ -113,11 +118,12 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 		fdate := newdate.Format(time.RFC3339)
 		date := fdate[:11]
+		Date := fdate[:10]
 
 		events := getEvents(srv, date, min_time, max_time)
 
 		if len(events.Items) == 0 {
-			message := date + "-" + "No schedule"
+			message := Date + "```No schedule```"
 			s.ChannelMessageSend(m.ChannelID, message)
 		} else {
 			for _, item := range events.Items {
@@ -126,7 +132,7 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 					date = item.Start.Date
 				}
 
-				schedule := item.Summary + " " + date
+				schedule := h + item.Summary + " " + date + h
 				fmt.Println(schedule)
 				s.ChannelMessageSend(m.ChannelID, schedule)
 			}
@@ -150,6 +156,8 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)
+
+	h := "```"
 
 	srv, err := calendar.New(client)
 	if err != nil {
@@ -175,11 +183,12 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 		fdate := newdate.Format(time.RFC3339)
 		date := fdate[:11]
+		Date := fdate[:10]
 
 		events := getEvents(srv, date, min_time, max_time)
 
 		if len(events.Items) == 0 {
-			message := date + "-" + "No schedule"
+			message := Date + "```No schedule```"
 			s.ChannelMessageSend(m.ChannelID, message)
 		} else {
 			for _, item := range events.Items {
@@ -188,7 +197,7 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 					date = item.Start.Date
 				}
 
-				schedule := item.Summary + " " + date
+				schedule := h + item.Summary + " " + date + h
 				fmt.Println(schedule)
 				s.ChannelMessageSend(m.ChannelID, schedule)
 			}

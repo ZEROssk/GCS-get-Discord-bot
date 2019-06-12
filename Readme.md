@@ -1,4 +1,4 @@
-### <Get Google Calender Schedule Discord Bot>
+### Get Google Calender Schedule Discord Bot
 #### command
 ```
 !man, !today, !week, !nweek

@@ -76,7 +76,7 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	events := getEvents(srv, today_date, min_time, max_time)
 
 	if len(events.Items) == 0 {
-		Message = Message + Date + "```No schedule```"
+		Message += Date + "```No schedule```"
 	} else {
 		for _, item := range events.Items {
 			d := item.Start.DateTime
@@ -88,7 +88,7 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 			}
 
 			schedule = h + date + " " + item.Summary + h
-			Message = Message + Date + schedule
+			Message += Date + schedule
 		}
 	}
 	s.ChannelMessageSend(m.ChannelID, Message)
@@ -128,10 +128,10 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 		events := getEvents(srv, date, min_time, max_time)
 
-		Message = Message + Date
+		Message += Date
 
 		if len(events.Items) == 0 {
-			Message = Message + Date + "```No schedule```"
+			Message += Date + "```No schedule```"
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
@@ -143,7 +143,7 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 				}
 
 				schedule = h + date + " " + item.Summary + h
-				Message = Message + Date + schedule
+				Message += Date + schedule
 			}
 		}
 		if check == "Friday" {
@@ -199,10 +199,10 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 		events := getEvents(srv, date, min_time, max_time)
 
-		Message = Message + Date
+		Message += Date
 
 		if len(events.Items) == 0 {
-			Message = Message + Date + "```No schedule```"
+			Message += Date + "```No schedule```"
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
@@ -214,7 +214,7 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 				}
 
 				schedule = h + date + " " + item.Summary + h
-				Message = Message + Date + schedule
+				Message += Date + schedule
 			}
 		}
 		if check == "Friday" {

@@ -66,7 +66,6 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 	h := "```"
 	var Message string
-	var schedule string
 
 	srv, err := calendar.New(client)
 	if err != nil {
@@ -87,8 +86,7 @@ func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
 				date = d[11:16]
 			}
 
-			schedule = h + date + " " + item.Summary + h
-			Message += Date + schedule
+			Message += Date + h + date + " " + item.Summary + h
 		}
 	}
 	s.ChannelMessageSend(m.ChannelID, Message)
@@ -110,7 +108,6 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 	h := "```"
 	var Message string
-	var schedule string
 
 	srv, err := calendar.New(client)
 	if err != nil {
@@ -131,7 +128,7 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		Message += Date
 
 		if len(events.Items) == 0 {
-			Message += Date + "```No schedule```"
+			Message += "```No schedule```"
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
@@ -142,8 +139,7 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 					date = d[11:16]
 				}
 
-				schedule = h + date + " " + item.Summary + h
-				Message += Date + schedule
+				Message += h + date + " " + item.Summary + h
 			}
 		}
 		if check == "Friday" {
@@ -169,7 +165,6 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 	h := "```"
 	var Message string
-	var schedule string
 
 	srv, err := calendar.New(client)
 	if err != nil {
@@ -202,7 +197,7 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		Message += Date
 
 		if len(events.Items) == 0 {
-			Message += Date + "```No schedule```"
+			Message += "```No schedule```"
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
@@ -213,8 +208,7 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 					date = d[11:16]
 				}
 
-				schedule = h + date + " " + item.Summary + h
-				Message += Date + schedule
+				Message += h + date + " " + item.Summary + h
 			}
 		}
 		if check == "Friday" {

@@ -49,6 +49,15 @@ func getEvents(sv *calendar.Service, date string, min string, max string) *calen
 	return Ev
 }
 
+func checkHoliday() string {
+	location, _ := time.LoadLocation("Asia/Tokyo")
+	t := time.Now().In(location)
+	newdate := t.AddDate(0, 0, 0)
+	weekday := newdate.Weekday()
+	check := weekday.String()
+	return check
+}
+
 func Get_Sc_Today(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	location, _ := time.LoadLocation("Asia/Tokyo")
 	t := time.Now().In(location).Format(time.RFC3339)
@@ -66,6 +75,13 @@ func Get_Sc_Today(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 	h := "```"
 	var Message string
+
+	checkHoli := checkHoliday()
+	if checkHoli == "Saturday" || checkHoli == "Sunday" {
+		Message += Date + h + "Today is " + checkHoli + h
+		s.ChannelMessageSend(m.ChannelID, Message)
+		return checkHoli
+	}
 
 	srv, err := calendar.New(client)
 	if err != nil {
@@ -126,6 +142,12 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		events := getEvents(srv, date, min_time, max_time)
 
 		Message += Date
+		checkHoli := checkHoliday()
+		if checkHoli == "Saturday" || checkHoli == "Sunday" {
+			Message += h + "Today is " + checkHoli + h
+			s.ChannelMessageSend(m.ChannelID, Message)
+			break
+		}
 
 		if len(events.Items) == 0 {
 			Message += "```No schedule```"

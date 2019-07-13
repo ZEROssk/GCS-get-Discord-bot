@@ -38,7 +38,7 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	switch {
 	case m.Content == today:
-		GetSchedule.Get_Sc(s, m)
+		GetSchedule.Get_Sc_Today(s, m)
 
 	case m.Content == week:
 		GetSchedule.Get_Sc_Week(s, m)

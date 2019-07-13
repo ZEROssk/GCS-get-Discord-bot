@@ -49,7 +49,7 @@ func getEvents(sv *calendar.Service, date string, min string, max string) *calen
 	return Ev
 }
 
-func Get_Sc(s *discordgo.Session, m *discordgo.MessageCreate) string {
+func Get_Sc_Today(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	location, _ := time.LoadLocation("Asia/Tokyo")
 	t := time.Now().In(location).Format(time.RFC3339)
 	today_date := t[:11]

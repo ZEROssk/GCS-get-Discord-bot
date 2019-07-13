@@ -3,10 +3,12 @@
 ```
 !man, !today, !week, !nweek
 ```
-- !man is Show command all.
-- !today is Today schedule.
-- !week is Get from today to friday schedule.
-- !nweek is Get next week schedule.
+| Command | Function                          |
+|:-------:|:---------------------------------:|
+| !man    | Show command all                  |
+| !today  | Today schedule                    |
+| !week   | Get from today to friday schedule |
+| !nweek  | Get next week schedule            |
 
 #### License
 - MIT License

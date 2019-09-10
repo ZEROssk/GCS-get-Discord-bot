@@ -37,17 +37,17 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	switch {
-	case m.Content == today:
-		GetSchedule.Get_Sc_Today(s, m)
-
-	case m.Content == week:
-		GetSchedule.Get_Sc_Week(s, m)
-
-	case m.Content == nweek:
-		GetSchedule.Get_Sc_NWeek(s, m)
-
-	case m.Content == man:
-		s.ChannelMessageSend(m.ChannelID, manM)
+		case m.Content == today:
+			GetSchedule.Get_Sc_Today(s, m)
+	
+		case m.Content == week:
+			GetSchedule.Get_Sc_Week(s, m)
+	
+		case m.Content == nweek:
+			GetSchedule.Get_Sc_NWeek(s, m)
+	
+		case m.Content == man:
+			s.ChannelMessageSend(m.ChannelID, manM)
 	}
 }
 

@@ -17,18 +17,7 @@ var (
 	today = "!today"
 	week = "!week"
 	nweek = "!nweek"
-	clear = "!clear"
 	man = "!man"
-
-	setM = "Set Regular execution"
-	clearM = "Clear Regular execution"
-	manM = "```＊ CmdList: !today, !week, !nweek, !man\r|\r└─ README: https://github.com/ZEROssk/GCS-get-Discord-bot```"
-
-	min_time = "1:00:00+09:00"
-	max_time = "23:00:00+09:00"
-
-	secretJSON = "./TokenFile/secret.json"
-	clientJSON = "./TokenFile/credentials.json"
 )
 
 func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -36,18 +25,34 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
+	embed := &discordgo.MessageEmbed{
+		Title:  "GGCS",
+		Color:  0x00cc66,
+		Fields: []*discordgo.MessageEmbedField{
+			&discordgo.MessageEmbedField{
+				Name:   "CmdList:",
+				Value:  "!today\r!week\r!nweek\r!man",
+				Inline: true,
+			},
+			&discordgo.MessageEmbedField{
+				Name:   "README:",
+				Value:  "`https://github.com/ZEROssk/GCS-get-Discord-bot`",
+			},
+		},
+	}
+
 	switch {
-		case m.Content == today:
-			GetSchedule.Get_Sc_Today(s, m)
-	
-		case m.Content == week:
-			GetSchedule.Get_Sc_Week(s, m)
-	
-		case m.Content == nweek:
-			GetSchedule.Get_Sc_NWeek(s, m)
-	
-		case m.Content == man:
-			s.ChannelMessageSend(m.ChannelID, manM)
+	case m.Content == today:
+		GetSchedule.Get_Sc_Today(s, m)
+
+	case m.Content == week:
+		GetSchedule.Get_Sc_Week(s, m)
+
+	case m.Content == nweek:
+		GetSchedule.Get_Sc_NWeek(s, m)
+
+	case m.Content == man:
+		s.ChannelMessageSendEmbed(m.ChannelID, embed)
 	}
 }
 

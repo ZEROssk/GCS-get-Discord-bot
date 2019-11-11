@@ -2,11 +2,10 @@
 /GGCSDB/.env
 
 # Google Calendar token
-/GGCSDB/TokenFile/secret.json
+/GGCSDB/TokenFile/*
 
 # ./*.swp
 *swp
 
 # sh
-*.sh
-
+build_run.sh

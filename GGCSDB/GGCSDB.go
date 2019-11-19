@@ -31,7 +31,22 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
 				Name:   "CmdList:",
-				Value:  "!today\r!week\r!nweek\r!man",
+				Value:  "!today",
+				Inline: true,
+			},
+			&discordgo.MessageEmbedField{
+				Name:   "CmdList:",
+				Value:  "!week",
+				Inline: true,
+			},
+			&discordgo.MessageEmbedField{
+				Name:   "CmdList:",
+				Value:  "!nweek",
+				Inline: true,
+			},
+			&discordgo.MessageEmbedField{
+				Name:   "CmdList:",
+				Value:  "!man",
 				Inline: true,
 			},
 			&discordgo.MessageEmbedField{
@@ -42,17 +57,17 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	switch {
-	case m.Content == today:
-		GetSchedule.Get_Sc_Today(s, m)
-
-	case m.Content == week:
-		GetSchedule.Get_Sc_Week(s, m)
-
-	case m.Content == nweek:
-		GetSchedule.Get_Sc_NWeek(s, m)
-
-	case m.Content == man:
-		s.ChannelMessageSendEmbed(m.ChannelID, embed)
+		case m.Content == today:
+			GetSchedule.Get_Sc_Today(s, m)
+	
+		case m.Content == week:
+			GetSchedule.Get_Sc_Week(s, m)
+	
+		case m.Content == nweek:
+			GetSchedule.Get_Sc_NWeek(s, m)
+	
+		case m.Content == man:
+			s.ChannelMessageSendEmbed(m.ChannelID, embed)
 	}
 }
 

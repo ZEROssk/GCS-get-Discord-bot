@@ -2,7 +2,7 @@
 /GGCSDB/.env
 
 # Google Calendar token
-/GGCSDB/TokenFile/*
+*.json
 
 # ./*.swp
 *swp

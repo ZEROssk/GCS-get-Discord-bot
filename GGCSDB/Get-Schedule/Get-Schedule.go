@@ -73,13 +73,25 @@ func Get_Sc_Today(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)
 
-	h := "```"
+	h := "\n"
 	var Message string
 
 	checkHoli := checkHoliday()
 	if checkHoli == "Saturday" || checkHoli == "Sunday" {
-		Message += Date + h + "Today is " + checkHoli + h
-		s.ChannelMessageSend(m.ChannelID, Message)
+		Message += "Today is " + checkHoli
+
+		embed := &discordgo.MessageEmbed{
+			Title:  "Today Schedule",
+			Color:  0xd3381c,
+			Fields: []*discordgo.MessageEmbedField{
+				&discordgo.MessageEmbedField{
+					Name:   Date,
+					Value:  Message,
+					Inline: false,
+				},
+			},
+		}
+		s.ChannelMessageSendEmbed(m.ChannelID, embed)
 		return checkHoli
 	}
 
@@ -95,17 +107,29 @@ func Get_Sc_Today(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	} else {
 		for _, item := range events.Items {
 			d := item.Start.DateTime
-			date := ""
+			SdateTime := ""
 			if d == "" {
-				date = "00:00"
+				SdateTime = "00:00"
 			} else {
-				date = d[11:16]
+				SdateTime = d[11:16]
 			}
 
-			Message += Date + h + date + " " + item.Summary + h
+			Message += SdateTime + " " + item.Summary + h
 		}
 	}
-	s.ChannelMessageSend(m.ChannelID, Message)
+
+	embed := &discordgo.MessageEmbed{
+		Title:  "Today Schedule",
+		Color:  0x00cc66,
+		Fields: []*discordgo.MessageEmbedField{
+			&discordgo.MessageEmbedField{
+				Name:   Date,
+				Value:  Message,
+				Inline: false,
+			},
+		},
+	}
+	s.ChannelMessageSendEmbed(m.ChannelID, embed)
 	return "No schedule"
 }
 
@@ -122,7 +146,7 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)
 
-	h := "```"
+	h := "\n"
 	var Message string
 
 	srv, err := calendar.New(client)
@@ -141,12 +165,25 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 		events := getEvents(srv, date, min_time, max_time)
 
-		Message += Date
+		Message += h + "**" + Date + "**" + h
+
 		checkHoli := checkHoliday()
 		if checkHoli == "Saturday" || checkHoli == "Sunday" {
-			Message += h + "Today is " + checkHoli + h
-			s.ChannelMessageSend(m.ChannelID, Message)
-			break
+			Message = "Today is " + checkHoli
+
+			embed := &discordgo.MessageEmbed{
+				Title:  "Week Schedule",
+				Color:  0xd3381c,
+				Fields: []*discordgo.MessageEmbedField{
+					&discordgo.MessageEmbedField{
+						Name:   Date,
+						Value:  Message,
+						Inline: false,
+					},
+				},
+			}
+			s.ChannelMessageSendEmbed(m.ChannelID, embed)
+			return checkHoli
 		}
 
 		if len(events.Items) == 0 {
@@ -154,18 +191,29 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
-				date := ""
+				SdateTime := ""
 				if d == "" {
-					date = "00:00"
+					SdateTime = "00:00"
 				} else {
-					date = d[11:16]
+					SdateTime = d[11:16]
 				}
 
-				Message += h + date + " " + item.Summary + h
+				Message += SdateTime + " " + item.Summary + h
 			}
 		}
 		if check == "Friday" {
-			s.ChannelMessageSend(m.ChannelID, Message)
+			embed := &discordgo.MessageEmbed{
+				Title:  "Week Schedule",
+				Color:  0x00cc66,
+				Fields: []*discordgo.MessageEmbedField{
+					&discordgo.MessageEmbedField{
+						Name:   "Schedule",
+						Value:  Message,
+						Inline: false,
+					},
+				},
+			}
+			s.ChannelMessageSendEmbed(m.ChannelID, embed)
 			break
 		}
 	}
@@ -185,7 +233,7 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)
 
-	h := "```"
+	h := "\n"
 	var Message string
 
 	srv, err := calendar.New(client)
@@ -216,25 +264,36 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 
 		events := getEvents(srv, date, min_time, max_time)
 
-		Message += Date
+		Message += h + "**" + Date + "**" + h
 
 		if len(events.Items) == 0 {
 			Message += "```No schedule```"
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
-				date := ""
+				SdateTime := ""
 				if d == "" {
-					date = "00:00"
+					SdateTime = "00:00"
 				} else {
-					date = d[11:16]
+					SdateTime = d[11:16]
 				}
 
-				Message += h + date + " " + item.Summary + h
+				Message += SdateTime + " " + item.Summary + h
 			}
 		}
 		if check == "Friday" {
-			s.ChannelMessageSend(m.ChannelID, Message)
+			embed := &discordgo.MessageEmbed{
+				Title:  "Next Week Schedule",
+				Color:  0x00cc66,
+				Fields: []*discordgo.MessageEmbedField{
+					&discordgo.MessageEmbedField{
+						Name:   "Schedule",
+						Value:  Message,
+						Inline: false,
+					},
+				},
+			}
+			s.ChannelMessageSendEmbed(m.ChannelID, embed)
 			break
 		}
 	}

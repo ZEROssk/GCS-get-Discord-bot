@@ -26,31 +26,31 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	embed := &discordgo.MessageEmbed{
-		Title:  "GGCS",
+		Title:  "Help",
 		Color:  0x00cc66,
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
-				Name:   "CmdList:",
+				Name:   "Today Schedule",
 				Value:  "!today",
 				Inline: true,
 			},
 			&discordgo.MessageEmbedField{
-				Name:   "CmdList:",
+				Name:   "Week Schedule",
 				Value:  "!week",
 				Inline: true,
 			},
 			&discordgo.MessageEmbedField{
-				Name:   "CmdList:",
+				Name:   "Next Week Schedule",
 				Value:  "!nweek",
 				Inline: true,
 			},
 			&discordgo.MessageEmbedField{
-				Name:   "CmdList:",
+				Name:   "Help",
 				Value:  "!man",
 				Inline: true,
 			},
 			&discordgo.MessageEmbedField{
-				Name:   "README:",
+				Name:   "README",
 				Value:  "`https://github.com/ZEROssk/GCS-get-Discord-bot`",
 			},
 		},

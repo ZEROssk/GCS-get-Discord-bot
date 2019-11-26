@@ -74,19 +74,19 @@ func Get_Sc_Today(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	client := getClient(config, secretJSON)
 
 	h := "\n"
-	var Message string
+	var Sc string
 
 	checkHoli := checkHoliday()
 	if checkHoli == "Saturday" || checkHoli == "Sunday" {
-		Message += "Today is " + checkHoli
+		Sc = "Today is " + checkHoli
 
 		embed := &discordgo.MessageEmbed{
-			Title:  "Today Schedule",
-			Color:  0xd3381c,
+			Title:	"Today Schedule",
+			Color:	0xd3381c,
 			Fields: []*discordgo.MessageEmbedField{
 				&discordgo.MessageEmbedField{
-					Name:   Date,
-					Value:  Message,
+					Name:	Date,
+					Value:	Sc,
 					Inline: false,
 				},
 			},
@@ -103,7 +103,7 @@ func Get_Sc_Today(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	events := getEvents(srv, today_date, min_time, max_time)
 
 	if len(events.Items) == 0 {
-		Message += Date + "```No schedule```"
+		Sc = "No schedule"
 	} else {
 		for _, item := range events.Items {
 			d := item.Start.DateTime
@@ -114,17 +114,17 @@ func Get_Sc_Today(s *discordgo.Session, m *discordgo.MessageCreate) string {
 				SdateTime = d[11:16]
 			}
 
-			Message += SdateTime + " " + item.Summary + h
+			Sc += SdateTime + " " + item.Summary + h
 		}
 	}
 
 	embed := &discordgo.MessageEmbed{
-		Title:  "Today Schedule",
-		Color:  0x00cc66,
+		Title:	"Today Schedule",
+		Color:	0x00cc66,
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
-				Name:   Date,
-				Value:  Message,
+				Name:	Date,
+				Value:	Sc,
 				Inline: false,
 			},
 		},
@@ -146,13 +146,13 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)
 
-	h := "\n"
-	var Message string
-
 	srv, err := calendar.New(client)
 	if err != nil {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
+
+	var FieldsSlice []*discordgo.MessageEmbedField
+	h := "\n"
 
 	for i := 0; i < 5; i++ {
 		newdate := t.AddDate(0, 0, i)
@@ -164,20 +164,19 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		Date := fdate[:10]
 
 		events := getEvents(srv, date, min_time, max_time)
-
-		Message += h + "**" + Date + "**" + h
+		var Sc string
 
 		checkHoli := checkHoliday()
 		if checkHoli == "Saturday" || checkHoli == "Sunday" {
-			Message = "Today is " + checkHoli
-
+			Sc = "Today is " + checkHoli
+	
 			embed := &discordgo.MessageEmbed{
-				Title:  "Week Schedule",
-				Color:  0xd3381c,
+				Title:	"Week Schedule",
+				Color:	0x00cc66,
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
-						Name:   Date,
-						Value:  Message,
+						Name:	Date,
+						Value:	Sc,
 						Inline: false,
 					},
 				},
@@ -187,7 +186,7 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		}
 
 		if len(events.Items) == 0 {
-			Message += "```No schedule```"
+			Sc = "No schedule"
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
@@ -198,20 +197,22 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 					SdateTime = d[11:16]
 				}
 
-				Message += SdateTime + " " + item.Summary + h
+				Sc += SdateTime + " " + item.Summary + h
 			}
 		}
+
+		em := &discordgo.MessageEmbedField{
+			Name: Date,
+			Value: Sc,
+			Inline: false,
+		}
+		FieldsSlice = append(FieldsSlice, em)
+
 		if check == "Friday" {
 			embed := &discordgo.MessageEmbed{
-				Title:  "Week Schedule",
-				Color:  0x00cc66,
-				Fields: []*discordgo.MessageEmbedField{
-					&discordgo.MessageEmbedField{
-						Name:   "Schedule",
-						Value:  Message,
-						Inline: false,
-					},
-				},
+				Title:	"Week Schedule",
+				Color:	0x00cc66,
+				Fields: FieldsSlice,
 			}
 			s.ChannelMessageSendEmbed(m.ChannelID, embed)
 			break
@@ -233,15 +234,14 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	config := readClientJSON(clientJSON)
 	client := getClient(config, secretJSON)
 
-	h := "\n"
-	var Message string
-
 	srv, err := calendar.New(client)
 	if err != nil {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
 	var NMdate time.Time
+	var FieldsSlice []*discordgo.MessageEmbedField
+	h := "\n"
 
 	for i := 0; i < 7; i++ {
 		nextMonD := t.AddDate(0, 0, i+1)
@@ -263,11 +263,10 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 		Date := fdate[:10]
 
 		events := getEvents(srv, date, min_time, max_time)
-
-		Message += h + "**" + Date + "**" + h
+		var Sc string
 
 		if len(events.Items) == 0 {
-			Message += "```No schedule```"
+			Sc = "No schedule"
 		} else {
 			for _, item := range events.Items {
 				d := item.Start.DateTime
@@ -278,20 +277,22 @@ func Get_Sc_NWeek(s *discordgo.Session, m *discordgo.MessageCreate) string {
 					SdateTime = d[11:16]
 				}
 
-				Message += SdateTime + " " + item.Summary + h
+				Sc += SdateTime + " " + item.Summary + h
 			}
 		}
+
+		em := &discordgo.MessageEmbedField{
+			Name: Date,
+			Value: Sc,
+			Inline: false,
+		}
+		FieldsSlice = append(FieldsSlice, em)
+
 		if check == "Friday" {
 			embed := &discordgo.MessageEmbed{
-				Title:  "Next Week Schedule",
-				Color:  0x00cc66,
-				Fields: []*discordgo.MessageEmbedField{
-					&discordgo.MessageEmbedField{
-						Name:   "Schedule",
-						Value:  Message,
-						Inline: false,
-					},
-				},
+				Title:	"Next Week Schedule",
+				Color:	0x00cc66,
+				Fields: FieldsSlice,
 			}
 			s.ChannelMessageSendEmbed(m.ChannelID, embed)
 			break

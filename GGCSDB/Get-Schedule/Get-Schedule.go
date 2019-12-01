@@ -172,7 +172,7 @@ func Get_Sc_Week(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	
 			embed := &discordgo.MessageEmbed{
 				Title:	"Week Schedule",
-				Color:	0x00cc66,
+				Color:	0xd3381c,
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
 						Name:	Date,

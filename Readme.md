@@ -5,10 +5,11 @@
 ```
 | Command | Function                          |
 |:-------:|:---------------------------------:|
-| !man    | Show command all                  |
-| !today  | Today schedule                    |
+| !man    | Show all command                  |
+| !today  | Get today schedule                |
 | !week   | Get from today to friday schedule |
 | !nweek  | Get next week schedule            |
 
 #### License
 - MIT License
+-

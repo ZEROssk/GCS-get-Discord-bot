@@ -27,7 +27,7 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	embed := &discordgo.MessageEmbed{
 		Title:  "Help",
-		Color:  0x00cc66,
+		Color:  0x00bfff,
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
 				Name:   "Today Schedule",

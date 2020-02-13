@@ -18,7 +18,6 @@ var (
 	week = "!week"
 	nweek = "!nweek"
 	man = "!man"
-	error_channel = "Error! This channel is not supported."
 )
 
 func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {

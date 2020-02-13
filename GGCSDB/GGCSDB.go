@@ -27,7 +27,6 @@ func SendM(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if m.ChannelID != os.Getenv("CHANNEL_ID") {
-		s.ChannelMessageSend(m.ChannelID, error_channel)
 		return
 	}
 
